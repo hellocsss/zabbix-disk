@@ -1,0 +1,113 @@
+<!--容器图-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th=www.thymeleaf.org>
+<head>
+    <meta charset="UTF-8">
+    <title>jvmEChart</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 1000px;height:500px;"></div>
+<script type="text/javascript" th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var zabbixDataTime=new Array();
+    var zabbixDataValue=new Array();
+    var zabbixData = '[[${zabbixData}]]';
+    var zabbixDataList = JSON.parse(zabbixData);
+    var yMax='[[${yMax}]]';
+    var yMaxList=JSON.parse(yMax);
+    console.info("max值："+bytesToMBSize(yMaxList[0].value)+"MB");
+    for(j = 0; j < zabbixDataList.length; j++) {
+        zabbixDataTime[j]=timestampToTime(zabbixDataList[j].clock);
+        zabbixDataValue[j]=bytesToMBSize(zabbixDataList[j].value);
+    }
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '[[${title}]]'.replace(/^\"|\"$/g, ''),
+            //subtext: '[[${titleSub}]]'.replace(/^\"|\"$/g, ''),
+            left: 'center',
+            top: '0'
+        },
+        xAxis: {
+            name: dayTime(zabbixDataList[0].clock),
+            type: 'category',
+            data: zabbixDataTime,
+            axisLabel: {
+                //rotate: 90
+            },
+        },
+        yAxis: [
+            {
+                name: '[[${yAxisName}]]'.replace(/^\"|\"$/g, ''),
+                type: 'value',
+                /*axisLabel: {
+                    show: true,
+                    interval: 'auto',
+                    formatter: '{value} %',
+                },*/
+                axisLabel: {
+                   show: true,
+                   interval: 'auto',
+                   formatter: '{value} MB',
+               },
+                max: bytesToMBSize(yMaxList[9].value),
+                show: true
+            }
+        ],
+        series: [{
+            data: zabbixDataValue,
+            type: 'line',
+            areaStyle: {
+                color : '#b5e8e3'
+            },
+            itemStyle: {
+                color :'#05c9b5'
+            },
+           /* label: {
+                normal: {
+                    show: true,
+                    position: 'top',
+                    //formatter: '\n{c}%',
+                    formatter: '\n{c}MB',
+                }
+            },*/
+        },]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+    //时间戳转换
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()) + ':';
+        var s = (date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds());
+        return h+m+s;
+    }
+    function dayTime(timestamp) {
+        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var year = date.getFullYear() + '-';
+        var month = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+        return year + month + day;
+    }
+
+    function bytesToMBSize(bytes) {
+        if (bytes === 0)
+            return '0';
+        var k = 1024;
+        var mb = bytes/k/k;   //转化为MB
+        return mb.toFixed(2);//保留2位小数
+    }
+
+</script>
+</body>

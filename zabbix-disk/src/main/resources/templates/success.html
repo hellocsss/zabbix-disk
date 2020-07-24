@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+ <p>跳转成功</p>
+<!--
+ <p th:text="${hostid}" id="hostid"></p>
+ <p th:text="${name}" id="itemName"> </p>
+-->
+
+ <div id="main" style="width: 600px;height:400px;"></div>
+
+ <script type="text/javascript">
+
+
+     // 指定图表的配置项和数据
+     var option = {
+         xAxis: {
+             type: 'category',
+             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+         },
+         yAxis: {
+             type: 'value',
+             axisLabel: {
+                /* show: true,
+                 interval: 'auto',
+                 //formatter: '{value} %'
+                 formatter: ''*/
+             },
+         },
+         series: [{
+             data: [82, 93, 90, 94, 50, 10, 100],
+             type: 'line'
+         }]
+     };
+
+     var this_=this;
+     alert($("#hostid").text())
+     var name=$("#itemName").text();
+     alert($("#itemName").text())
+
+     $.ajax({
+         url: "",
+         data:{
+           "hostName": $("#hostid").text(),
+           "itemName": $("#itemName").text()
+         },
+         async: false,
+         dataType: 'json',
+         success: function (res) {
+             alert(res)
+             var aa={};
+             aa.show=true;
+             aa.interval='auto',
+             aa.formatter='{value} %'
+             option.yAxis.axisLabel=aa
+         }
+     })
+     // 基于准备好的dom，初始化echarts实例
+     var myChart = echarts.init(document.getElementById('main'));
+
+     var zabbixdata=[[${zabbixdataitem}]];
+     var zabbixDataList = JSON.parse(zabbixData);
+     var zabbixDataValue=new Array();
+
+     var myArray2=new Array();
+     for(j = 0,len=zabbixDataList.length; j < len; j++) {
+         zabbixDataTime[j] = timestampToTime(zabbixDataList[j].clock);
+         zabbixDataValue[j] = zabbixDataList[j].value;
+
+     }
+
+
+
+
+
+     // 使用刚指定的配置项和数据显示图表。
+     myChart.setOption(option);
+ </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+[com.zabbix.disk.controller]
+AccessRequest.AccessToken = * */1 * * *
