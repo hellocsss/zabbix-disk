@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
-@Controller
+/*@Controller*/
 public class kafkaController {
 
     @RequestMapping("/sss")

@@ -4,16 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * <p>标题: 返回实体</p>
- * <p>描述: </p>
- * <p>版权: Copyright (c) 2020</p>
- * <p>公司: 智业软件股份有限公司</p>
- *
- * @version: 1.0
- * @author: cwk
- * @date 2020/4/10
- */
 @Data
 public class ResponseEntity<T> implements Serializable {
 

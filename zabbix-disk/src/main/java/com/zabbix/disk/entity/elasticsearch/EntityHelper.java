@@ -27,16 +27,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>标题: 实体工具</p>
- * <p>描述: 用于ES API返回json的实体转换</p>
- * <p>版权: Copyright (c) 2018</p>
- * <p>公司: 智业软件股份有限公司</p>
- *
- * @version: 1.0
- * @author: YT
- * @date 2018/11/22
- */
+
 @Slf4j
 public class EntityHelper {
 
