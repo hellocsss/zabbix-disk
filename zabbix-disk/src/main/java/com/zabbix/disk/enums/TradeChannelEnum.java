@@ -44,4 +44,9 @@ public enum TradeChannelEnum {
 
         return ALL_ENTRIES.get(value);
     }
+
+    public String getStatus() {
+        return status;
+    }
+
 }
